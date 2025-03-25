@@ -21,7 +21,7 @@ def close_connection(exception):
 
 @app.route("/")
 def home():
-    return "hello"
+    return render_template('home.html')
 
 
 @app.route("/index")
@@ -30,7 +30,7 @@ def species():
     sql = "SELECT * FROM Species"
     cursor.execute(sql)
     results = cursor.fetchall()
-    print(str(results))
+    return render_template("species.html", results=results)
 
 
 if __name__ == "__main__":
