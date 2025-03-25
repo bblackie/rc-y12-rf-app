@@ -1,0 +1,115 @@
+body {
+  font-family: 'Georgia', serif;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+  height: 100vh;
+  color: #ffffff;
+  margin: 0;
+  padding: 20px;
+  background-color: rgb(85, 111, 85);
+  text-align: center;
+  padding: 0;
+}
+
+/* Header 1 */
+h1 {
+  background: rgba(30, 87, 73, 0.9);
+  padding: 30px;
+  border-bottom: 3px solid white;
+  border-top: 3px solid white;
+  border-left: 3px solid white;
+  border-right: 3px solid white;
+  font-size: 3em;
+  text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.438);
+}
+
+p {
+  font-size: 1em;
+  color: lightgray;
+}
+
+/* Centering Everything */
+.sections {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  margin-top: 50px;
+}
+
+/* Section Cards */
+.section-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s, background 0.3s;
+  cursor: pointer;
+  width: 320px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin: top 20px;
+  margin: left 20px;
+  margin: right 20px;
+  display:ruby-base-container;
+}
+
+.container {
+  display: flex;
+  row-gap: 50px;
+  flex-wrap: wrap;
+}
+
+
+.section-card img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px white;
+}
+
+/* Hover Effect */
+.section-card:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* cards for each field */
+#species, #scientific_name, #species_type, #Origin_Status, #status, #family, #numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+
+.search-container {
+  position:relative;
+  width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+    text-align: center;
+  }
+  
+  /* Add rounded corners to the top left and the top right corner of the image */
+  img {
+    border-radius: 5px 5px 0 0;
+  }

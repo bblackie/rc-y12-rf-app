@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/static/css/styles.css" />
+        <title>NZ Wildlife</title>
+    </head>
+    <body>
+        <tr>
+            <h1> The NZ Wildlife Program </h1>
+            <form action="/add" method="POST">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search..." onkeyup="searchData()">
+                    <div id="results"> </div>
+                </div>
+                <br>
+                <label for="NZ Wildlife">Pick a field:</label>
+                <select name="species" id="species_id">
+                    <option value="species_name">Species Name</option>
+                    <option value="scientific_name">Scientific Name</option>
+                    <option value="species_type">Species Type</option>
+                    <option value="origin_status">Origin Status</option>
+                    <option value="status">Status</option>
+                    <option value="family">Family</option>
+                    <option value="numbers">Numbers</option>
+                  </select>
+            </form>
+        </tr>
+        <table>
+            <div class="container">
+                <div class="section-card">
+                    <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+                    <div class="container">
+                      <h4><b>Species</b></h4>
+                      <p>What species inhabit Aotearoa?</p>
+                    </div></div>
+          <div class="section-card">
+            <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+            <div class="container">
+              <h4><b>Scientific Names</b></h4>
+              <p>What are species scientific names?</p>
+            </div>
+          </div>
+          <div class="section-card">
+            <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+            <div class="container">
+              <h4><b>Species Types</b></h4>
+              <p>What are the kinds of species in NZ?</p>
+            </div>
+          </div>
+          <div class="section-card">
+            <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+            <div class="container">
+              <h4><b>Origin</b></h4>
+              <p>What are the kinds of species in NZ?</p>
+            </div>
+          </div>
+          <div class="section-card">
+            <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+            <div class="container">
+              <h4><b>Status</b></h4>
+              <p>How many are left?</p>
+            </div>
+          </div>
+          <div class="section-card">
+            <img src="Design.pdf" alt="IMAGE HERE" style="width:100%">
+            <div class="container">
+              <h4><b>Family</b></h4>
+              <p>Who do they belong to biologically?</p>
+            </div>
+          </div>
+          </div>
+        </table>
+        <br>
+    </body>
+</html>
