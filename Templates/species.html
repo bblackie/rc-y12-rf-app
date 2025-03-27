@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF - 8">
-        <meta name="viewport" content="width=device-width, initial-scale-1.e">
-        <meta http-equiv="X-UA- Compatible" content="ie-edge">
-        <link rel="stylesheet" href={{url_for('static', index='styles.css'}}>
-        <title>Species</title>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-           </tr>
-           {% for item in results %}
-           <tr>
-                <td>{{item[1]}}</td>
-                <td>{{item[2]}}</td>
-           </tr>
-           {% endfor %}
-        </table>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Species</title>
+    <script>
+        function filterSpecies() {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get("name");
+    
+            if (query) {
+                let found = false;
+                const rows = document.querySelectorAll("tr.species-row");
+    
+                rows.forEach(row => {
+                    const speciesName = row.getAttribute("data-name").toLowerCase();
+                    if (speciesName.includes(query.toLowerCase())) {
+                        row.style.display = "";
+                        found = true;
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+    
+                if (!found) {
+                    document.getElementById("no-results").style.display = "block";
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="filterSpecies()">
+    <h1>Species Information</h1>
+
+    <table>
+        <tr>
+            <th><h2>Name</h2></th>
+            <th><h2>Scientific Name</h2></th>
+            <th><h2>Image</h2></th>
+        </tr>
+
+        {% for item in species %}
+        <tr class="species-row" data-name="{{ item[1] }}">
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td><img width="300px" src="{{ item[10] }}" alt="{{ item[1] }} image"></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p id="no-results" style="display: none; color: red;">No matching species found.</p>
+
+    <br>
+    <a href="index.html">← Back to Home</a>
+</body>
 </html>

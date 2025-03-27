@@ -26,6 +26,17 @@ def home():
     cursor.close()
     return render_template("index.html", species=results)
 
+
+@app.route("/species")
+def species():
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM species")
+    results = cursor.fetchall()
+    cursor.close()
+    return render_template("species.html", species=results)
+
+
+
 @app.route('/add', methods=["GET", "POST"])
 def add():
     if request.method == "POST":
