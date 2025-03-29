@@ -23,6 +23,9 @@ def home():
     db = get_db()
     cursor = db.cursor()
     
+    # Get the selected field from the query parameter
+    selected_field = request.args.get('field', default=None)
+    
     # Get all data from the Species table
     cursor.execute("SELECT * FROM Species")
     species_results = cursor.fetchall()
@@ -41,22 +44,40 @@ def home():
     
     cursor.close()
     
+    # Map column indices for different fields
+    field_indices = {
+        'species_name': 1,
+        'scientific_name': 2,
+        'species_type': 3,
+        'origin_status': 4,
+        'predator': 5,
+        'prey': 6,
+        'status': 7,
+        'family': 8,
+        'numbers': 9
+    }
+    
     return render_template(
         "index.html", 
         species=species_results,
         origin_status=origin_status_results,
         species_type=species_type_results,
-        status=status_results
+        status=status_results,
+        selected_field=selected_field,
+        field_indices=field_indices
     )
 
 
 @app.route("/species")
 def species():
     cursor = get_db().cursor()
+    field = request.args.get('field', default='species_name', type=str)
+    search_query = request.args.get('name', default='', type=str)
+    
     cursor.execute("SELECT * FROM species")
     results = cursor.fetchall()
     cursor.close()
-    return render_template("species.html", species=results)
+    return render_template("species.html", species=results, search_query=search_query)
 
 
 @app.route('/add', methods=["GET", "POST"])

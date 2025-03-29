@@ -43,12 +43,12 @@ h2 {
 }
 
 /* Form styling */
-form {
+form, .field-selector {
   background-color: var(--table-even-row);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .search-container {
@@ -87,6 +87,8 @@ select {
   margin-top: 5px;
   width: 100%;
   max-width: 300px;
+  cursor: pointer;
+  background-color: white;
 }
 
 label {
@@ -188,4 +190,9 @@ a {
 a:hover {
   color: var(--primary-color);
   text-decoration: underline;
+}
+
+/* Field selector styling */
+.field-selector {
+  margin-top: 15px;
 }
