@@ -6,30 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/static/css/styles.css" />
     <title>NZ Wildlife</title>
-    <script>
-    function searchSpecies() {
-        const query = document.getElementById("search-box").value.trim();
-
-        if (query) {
-            // Redirect to species.html (whether searching for "species" or a specific species)
-            window.location.href = "species";
-        } else {
-            document.getElementById("results").innerHTML = "<p>Please enter a search term.</p>";
-        }
-    }
-  </script>
 </head>
 <body>
     <h1>The NZ Wildlife Program</h1>
-    <form onsubmit="event.preventDefault(); searchSpecies();">
+    <form action="/species" method="get">
         <div class="search-container">
-            <input type="text" id="search-box" class="search-input" placeholder="Search...">
+            <input type="text" id="search-box" name="name" class="search-input" placeholder="Search...">
             <button type="submit">Search</button>
-            <div id="results"></div>
         </div>
         <br>
-        <label for="NZ Wildlife">Pick a field then search it in the bar above:</label>
-        <select name="species" id="species_id">
+        <label for="species_id">Pick a field to search:</label>
+        <select name="field" id="species_id">
             <option value="species_name">Species Name</option>
             <option value="scientific_name">Scientific Name</option>
             <option value="species_type">Species Type</option>
@@ -38,43 +25,81 @@
             <option value="family">Family</option>
             <option value="numbers">Numbers</option>
         </select>
-        <br><br><br>
+        <br><br>
     </form>
 
-    <table>
-        <div class="container">
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Species</b></h4>
-                    <p>What species inhabit Aotearoa?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Species Types</b></h4>
-                    <p>What are the kinds of species in NZ?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Origin</b></h4>
-                    <p>What are the kinds of species in NZ?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Status</b></h4>
-                    <p>How many are left?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Family</b></h4>
-                    <p>Who do they belong to biologically?</p>
-                </div>
-            </div>
-        </div>
+    <h2>All Species</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Species Name</th>
+            <th>Scientific Name</th>
+            <th>Species Type</th>
+            <th>Origin Status</th>
+            <th>Predator</th>
+            <th>Prey</th>
+            <th>Status</th>
+            <th>Family</th>
+            <th>Numbers</th>
+            <th>Image</th>
+        </tr>
+        {% for item in species %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[6] }}</td>
+            <td>{{ item[7] }}</td>
+            <td>{{ item[8] }}</td>
+            <td>{{ item[9] }}</td>
+            <td><img width="150px" src="{{ item[10] }}" alt="{{ item[1] }} image"></td>
+        </tr>
+        {% endfor %}
     </table>
-    <br>
+
+    <h2>Origin Status</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Origin Status</th>
+        </tr>
+        {% for item in origin_status %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Species Type</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Species Type</th>
+        </tr>
+        {% for item in species_type %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Status</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Status</th>
+        </tr>
+        {% for item in status %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

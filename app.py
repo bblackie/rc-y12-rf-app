@@ -20,11 +20,34 @@ def close_connection(exception):
 
 @app.route("/")
 def home():
-    cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM species")
-    results = cursor.fetchall()
+    db = get_db()
+    cursor = db.cursor()
+    
+    # Get all data from the Species table
+    cursor.execute("SELECT * FROM Species")
+    species_results = cursor.fetchall()
+    
+    # Get all data from the Origin_Status table
+    cursor.execute("SELECT * FROM Origin_Status")
+    origin_status_results = cursor.fetchall()
+    
+    # Get all data from the Species_Type table
+    cursor.execute("SELECT * FROM Species_Type")
+    species_type_results = cursor.fetchall()
+    
+    # Get all data from the Status table
+    cursor.execute("SELECT * FROM Status")
+    status_results = cursor.fetchall()
+    
     cursor.close()
-    return render_template("index.html", species=results)
+    
+    return render_template(
+        "index.html", 
+        species=species_results,
+        origin_status=origin_status_results,
+        species_type=species_type_results,
+        status=status_results
+    )
 
 
 @app.route("/species")
@@ -34,7 +57,6 @@ def species():
     results = cursor.fetchall()
     cursor.close()
     return render_template("species.html", species=results)
-
 
 
 @app.route('/add', methods=["GET", "POST"])
