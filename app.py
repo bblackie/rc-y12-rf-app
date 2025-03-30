@@ -1,19 +1,14 @@
-from flask import Flask, g, render_template, request, redirect, flash, jsonify
+from flask import Flask, g, render_template, request, redirect
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Required for flashing messages
 
 DATABASE = 'NZ_Wildlife.db'
 
 def get_db():
     if not hasattr(g, '_database'):
-        try:
-            g._database = sqlite3.connect(DATABASE)
-            g._database.row_factory = sqlite3.Row
-        except sqlite3.Error as e:
-            print(f"Database connection error: {e}")
-            return None
+        g._database = sqlite3.connect(DATABASE)
+        g._database.row_factory = sqlite3.Row  
     return g._database
 
 
@@ -25,116 +20,82 @@ def close_connection(exception):
 
 @app.route("/")
 def home():
-    try:
-        cursor = get_db().cursor()
-        
-        # Get species data
-        cursor.execute("""
-            SELECT species_Id, species_name, scientific_name, species_type, 
-                   origin_status, status, family, numbers, predator, prey,
-                   image_path
-            FROM species
-        """)
-        species_results = cursor.fetchall()
-        
-        # Get Status data
-        cursor.execute("SELECT * FROM Status")
-        status_results = cursor.fetchall()
-        
-        # Get Origin_Status data
-        cursor.execute("SELECT * FROM Origin_Status")
-        origin_status_results = cursor.fetchall()
-        
-        # Get Species_Type data
-        cursor.execute("SELECT * FROM Species_Type")
-        species_type_results = cursor.fetchall()
-        
-        cursor.close()
-        
-        return render_template("index.html", 
-                             species=species_results,
-                             status=status_results,
-                             origin_status=origin_status_results,
-                             species_type=species_type_results)
-    except Exception as e:
-        print(f"Error in home route: {e}")
-        return "Error loading data"
+    db = get_db()
+    cursor = db.cursor()
+    
+    # Get the selected field from the query parameter
+    selected_field = request.args.get('field', default=None)
+    
+    # Get all data from the Species table
+    cursor.execute("SELECT * FROM Species")
+    species_results = cursor.fetchall()
+    
+    # Get all data from the Origin_Status table
+    cursor.execute("SELECT * FROM Origin_Status")
+    origin_status_results = cursor.fetchall()
+    
+    # Get all data from the Species_Type table
+    cursor.execute("SELECT * FROM Species_Type")
+    species_type_results = cursor.fetchall()
+    
+    # Get all data from the Status table
+    cursor.execute("SELECT * FROM Status")
+    status_results = cursor.fetchall()
+    
+    cursor.close()
+    
+    # Map column indices for different fields
+    field_indices = {
+        'species_name': 1,
+        'scientific_name': 2,
+        'species_type': 3,
+        'origin_status': 4,
+        'predator': 5,
+        'prey': 6,
+        'status': 7,
+        'family': 8,
+        'numbers': 9
+    }
+    
+    return render_template(
+        "index.html", 
+        species=species_results,
+        origin_status=origin_status_results,
+        species_type=species_type_results,
+        status=status_results,
+        selected_field=selected_field,
+        field_indices=field_indices
+    )
 
 
 @app.route("/species")
 def species():
     cursor = get_db().cursor()
+    field = request.args.get('field', default='species_name', type=str)
+    search_query = request.args.get('name', default='', type=str)
+    
     cursor.execute("SELECT * FROM species")
     results = cursor.fetchall()
     cursor.close()
-    return render_template("species.html", species=results)
-
+    return render_template("species.html", species=results, search_query=search_query)
 
 
 @app.route('/add', methods=["GET", "POST"])
 def add():
     if request.method == "POST":
-        new_name = request.form.get("item_name", '').strip()
-        new_description = request.form.get("item_description", '').strip()
-
-        if not new_name or not new_description:
-            return redirect('/')  # Return early if data is invalid
-
         try:
-            cursor = get_db().cursor()
-            cursor.execute("INSERT INTO species (name, description) VALUES (?, ?)", 
-                         (new_name, new_description))
-            get_db().commit()
-            cursor.close()
+            new_name = request.form.get("item_name")
+            new_description = request.form.get("item_description")
+
+            if new_name and new_description:  
+                cursor = get_db().cursor()
+                cursor.execute("INSERT INTO species (name, description) VALUES (?, ?)", (new_name, new_description))
+                get_db().commit()
+                cursor.close()
         except sqlite3.Error as e:
-            print(f"Database error in add route: {e}")
-        except Exception as e:
-            print(f"Unexpected error in add route: {e}")
+            print("Database error:", e)
 
     return redirect('/')
-
-@app.route('/add_species', methods=['POST'])
-def add_species():
-    try:
-        # Get form data
-        species_name = request.form.get('species_name')
-        scientific_name = request.form.get('scientific_name')
-        species_type = request.form.get('species_type')
-        origin_status = request.form.get('origin_status')
-        status = request.form.get('status')
-        family = request.form.get('family')
-        numbers = request.form.get('numbers')
-        predator = request.form.get('predator')
-        prey = request.form.get('prey')
-        image_path = request.form.get('image_path')
-
-        # Validate required fields
-        if not all([species_name, scientific_name, species_type, origin_status, status]):
-            flash('Please fill in all required fields', 'error')
-            return redirect('/')
-
-        # Insert into database
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("""
-            INSERT INTO species (
-                species_name, scientific_name, species_type, origin_status,
-                status, family, numbers, predator, prey, image_path
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (species_name, scientific_name, species_type, origin_status,
-              status, family, numbers, predator, prey, image_path))
-        
-        db.commit()
-        cursor.close()
-        flash('Species added successfully!', 'success')
-        return redirect('/')
-
-    except sqlite3.Error as e:
-        flash(f'Database error: {str(e)}', 'error')
-        return redirect('/')
-    except Exception as e:
-        flash(f'Error: {str(e)}', 'error')
-        return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
