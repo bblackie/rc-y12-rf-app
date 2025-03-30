@@ -71,10 +71,37 @@ def home():
 @app.route("/species")
 def species():
     cursor = get_db().cursor()
-    field = request.args.get('field', default='species_name', type=str)
-    search_query = request.args.get('name', default='', type=str)
+    search_query = request.args.get('name', default='', type=str).lower()
     
-    cursor.execute("SELECT * FROM species")
+    if search_query:
+        # Search across all relevant fields
+        cursor.execute("""
+            SELECT DISTINCT s.*, 
+                   CASE 
+                       WHEN LOWER(s.species_name) LIKE ? THEN 'Species Name'
+                       WHEN LOWER(s.scientific_name) LIKE ? THEN 'Scientific Name'
+                       WHEN LOWER(s.species_type) LIKE ? THEN 'Species Type'
+                       WHEN LOWER(s.origin_status) LIKE ? THEN 'Origin Status'
+                       WHEN LOWER(s.predator) LIKE ? THEN 'Predator'
+                       WHEN LOWER(s.prey) LIKE ? THEN 'Prey'
+                       WHEN LOWER(s.status) LIKE ? THEN 'Status'
+                       WHEN LOWER(s.family) LIKE ? THEN 'Family'
+                       WHEN LOWER(s.numbers) LIKE ? THEN 'Numbers'
+                   END as matched_field
+            FROM species s
+            WHERE LOWER(s.species_name) LIKE ?
+               OR LOWER(s.scientific_name) LIKE ?
+               OR LOWER(s.species_type) LIKE ?
+               OR LOWER(s.origin_status) LIKE ?
+               OR LOWER(s.predator) LIKE ?
+               OR LOWER(s.prey) LIKE ?
+               OR LOWER(s.status) LIKE ?
+               OR LOWER(s.family) LIKE ?
+               OR LOWER(s.numbers) LIKE ?
+        """, ['%' + search_query + '%'] * 18)  # 9 for CASE + 9 for WHERE
+    else:
+        cursor.execute("SELECT *, NULL as matched_field FROM species")
+    
     results = cursor.fetchall()
     cursor.close()
     return render_template("species.html", species=results, search_query=search_query)
