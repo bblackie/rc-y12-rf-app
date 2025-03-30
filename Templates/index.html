@@ -21,6 +21,15 @@
 </head>
 <body>
     <h1>The NZ Wildlife Program</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <form onsubmit="event.preventDefault(); searchSpecies();">
         <div class="search-container">
             <input type="text" id="search-box" class="search-input" placeholder="Search...">
@@ -41,40 +50,169 @@
         <br><br><br>
     </form>
 
-    <table>
-        <div class="container">
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Species</b></h4>
-                    <p>What species inhabit Aotearoa?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Species Types</b></h4>
-                    <p>What are the kinds of species in NZ?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Origin</b></h4>
-                    <p>What are the kinds of species in NZ?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Status</b></h4>
-                    <p>How many are left?</p>
-                </div>
-            </div>
-            <div class="section-card">
-                <div class="container">
-                    <h4><b>Family</b></h4>
-                    <p>Who do they belong to biologically?</p>
-                </div>
-            </div>
+    <h2>Add New Species</h2>
+    <form action="/add_species" method="POST" class="add-species-form">
+        <div class="form-group">
+            <label for="species_name">Species Name*:</label>
+            <input type="text" id="species_name" name="species_name" required>
         </div>
+        
+        <div class="form-group">
+            <label for="scientific_name">Scientific Name*:</label>
+            <input type="text" id="scientific_name" name="scientific_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="species_type">Species Type*:</label>
+            <select id="species_type" name="species_type" required>
+                {% for type in species_type %}
+                    <option value="{{ type['type_name'] }}">{{ type['type_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="origin_status">Origin Status*:</label>
+            <select id="origin_status" name="origin_status" required>
+                {% for origin in origin_status %}
+                    <option value="{{ origin['origin_status_name'] }}">{{ origin['origin_status_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status*:</label>
+            <select id="status" name="status" required>
+                {% for s in status %}
+                    <option value="{{ s['status_name'] }}">{{ s['status_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="family">Family:</label>
+            <input type="text" id="family" name="family">
+        </div>
+        
+        <div class="form-group">
+            <label for="numbers">Numbers:</label>
+            <input type="text" id="numbers" name="numbers">
+        </div>
+        
+        <div class="form-group">
+            <label for="predator">Predator:</label>
+            <input type="text" id="predator" name="predator">
+        </div>
+        
+        <div class="form-group">
+            <label for="prey">Prey:</label>
+            <input type="text" id="prey" name="prey">
+        </div>
+        
+        <div class="form-group">
+            <label for="image_path">Image Path:</label>
+            <input type="text" id="image_path" name="image_path">
+        </div>
+        
+        <button type="submit" class="submit-btn">Add Species</button>
+    </form>
+
+    <h2>Species Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Species ID</th>
+                <th>Species Name</th>
+                <th>Scientific Name</th>
+                <th>Species Type</th>
+                <th>Origin Status</th>
+                <th>Status</th>
+                <th>Family</th>
+                <th>Numbers</th>
+                <th>Predator</th>
+                <th>Prey</th>
+                <th>Image Path</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in species %}
+            <tr>
+                <td>{{ item['species_Id'] }}</td>
+                <td>{{ item['species_name'] }}</td>
+                <td>{{ item['scientific_name'] }}</td>
+                <td>{{ item['species_type'] }}</td>
+                <td>{{ item['origin_status'] }}</td>
+                <td>{{ item['status'] }}</td>
+                <td>{{ item['family'] }}</td>
+                <td>{{ item['numbers'] }}</td>
+                <td>{{ item['predator'] }}</td>
+                <td>{{ item['prey'] }}</td>
+                <td>{{ item['image_path'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    <h2>Status Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Status ID</th>
+                <th>Status Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in status %}
+            <tr>
+                <td>{{ item['status_Id'] }}</td>
+                <td>{{ item['status_name'] }}</td>
+                <td>{{ item['description'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Origin Status Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Origin Status ID</th>
+                <th>Origin Status Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in origin_status %}
+            <tr>
+                <td>{{ item['origin_status_Id'] }}</td>
+                <td>{{ item['origin_status_name'] }}</td>
+                <td>{{ item['description'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Species Type Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Species Type ID</th>
+                <th>Species Type Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in species_type %}
+            <tr>
+                <td>{{ item['species_type_Id'] }}</td>
+                <td>{{ item['species_type_name'] }}</td>
+                <td>{{ item['description'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     <br>
 </body>
 </html>

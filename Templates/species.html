@@ -34,7 +34,7 @@
 </head>
 <body onload="filterSpecies()">
     <h1>Species Information</h1>
-    <a href="http://127.0.0.1:5000/">← Back to Home</a>
+    <a href="/">← Back to Home</a>
 
     <table>
         <tr>
@@ -44,10 +44,10 @@
         </tr>
 
         {% for item in species %}
-        <tr class="species-row" data-name="{{ item[1] }}">
-            <td>{{ item[1] }}</td>
-            <td>{{ item[2] }}</td>
-            <td><img width="300px" src="{{ item[10] }}" alt="{{ item[1] }} image"></td>
+        <tr class="species-row" data-name="{{ item['name'] }}">
+            <td>{{ item['name'] }}</td>
+            <td>{{ item['scientific_name'] }}</td>
+            <td><img class="species-image" src="{{ item['image_url'] }}" alt="{{ item['name'] }} image"></td>
         </tr>
         {% endfor %}
     </table>
@@ -55,6 +55,6 @@
     <p id="no-results" style="display: none; color: red;">No matching species found.</p>
 
     <br>
-    <a href="http://127.0.0.1:5000/">← Back to Home</a>
+    <a href="/">← Back to Home</a>
 </body>
 </html>
