@@ -25,23 +25,50 @@ def close_connection(exception):
 
 @app.route("/")
 def home():
-    cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM species")
-    results = cursor.fetchall()
-    cursor.close()
-    return render_template("index.html", species=results)
+    try:
+        cursor = get_db().cursor()
+        
+        # Get species data
+        cursor.execute("""
+            SELECT species_Id, species_name, scientific_name, species_type, 
+                   origin_status, status, family, numbers, predator, prey,
+                   image_path
+            FROM species
+        """)
+        species_results = cursor.fetchall()
+        
+        # Get Status data
+        cursor.execute("SELECT * FROM Status")
+        status_results = cursor.fetchall()
+        
+        # Get Origin_Status data
+        cursor.execute("SELECT * FROM Origin_Status")
+        origin_status_results = cursor.fetchall()
+        
+        # Get Species_Type data
+        cursor.execute("SELECT * FROM Species_Type")
+        species_type_results = cursor.fetchall()
+        
+        cursor.close()
+        
+        return render_template("index.html", 
+                             species=species_results,
+                             status=status_results,
+                             origin_status=origin_status_results,
+                             species_type=species_type_results)
+    except Exception as e:
+        print(f"Error in home route: {e}")
+        return "Error loading data"
 
 
 @app.route("/species")
 def species():
     cursor = get_db().cursor()
-    field = request.args.get('field', default='species_name', type=str)
-    search_query = request.args.get('name', default='', type=str)
-    
     cursor.execute("SELECT * FROM species")
     results = cursor.fetchall()
     cursor.close()
-    return render_template("species.html", species=results, search_query=search_query)
+    return render_template("species.html", species=results)
+
 
 
 @app.route('/add', methods=["GET", "POST"])

@@ -1,161 +1,198 @@
+/* Wildlife Theme CSS */
+:root {
+  --primary-color: #2e7d32; /* Forest green */
+  --secondary-color: #1b5e20; /* Darker green */
+  --accent-color: #8bc34a; /* Light green */
+  --background-color: #f1f8e9; /* Light beige/green */
+  --table-header-bg: #43a047; /* Medium green */
+  --table-even-row: #e8f5e9; /* Very light green */
+  --table-odd-row: #ffffff; /* White */
+  --table-border: #81c784; /* Light green border */
+  --text-color: #33691e; /* Dark green text */
+  --heading-color: #33691e; /* Dark green headings */
+  --link-color: #1b5e20; /* Dark green links */
+}
+
 body {
-  font-family: 'Verdana', serif;
-  display: flex;
-  flex-direction: column;
-  align-items:center;
-  justify-content: center;
-  min-height: 100vh; /* Instead of height: 100vh */
-  overflow-x: hidden;
-  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
   margin: 0;
   padding: 20px;
-  background-color: rgb(76, 99, 76);
-  text-align: center;
-  padding: 0;
-  background-image: url(".gif");
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-head {
-  background-color: rgb(76, 99, 76);
-}
-
-/* Header 1 */
 h1 {
-  background: rgba(40, 71, 63, 0.9);
-  padding: 55px;
-  border-bottom: 3px solid white;
-  font-size: 3.2em;
-  text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.438);
-  border-radius: 65px;
+  color: var(--heading-color);
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 10px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  background-color: rgba(40, 71, 63, 0.9);
+  color: var(--heading-color);
+  margin-top: 30px;
+  margin-bottom: 15px;
+  border-left: 5px solid var(--accent-color);
+  padding-left: 10px;
+}
+
+/* Form styling */
+form, .field-selector {
+  background-color: var(--table-even-row);
   padding: 20px;
-  border-bottom: 2.5px solid white;
-  font-size: 1.8em;
-  text-shadow: 0px 0px 12px rgba(255, 255, 255, 0.438);
-  border-radius: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
-
-h4 {
-  font-size: 2em;
-}
-
-p {
-  font-size: 1.2em;
-  color: lightgray;
-}
-
-td {
-  background-color: rgb(45, 75, 57);
-  padding: 20px;
-  border-radius: 1.5px solid white;
-  font-size: 2em;
-  text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.438);
-  border-radius: 25px;
-}
-
-/* Centering Everything */
-.sections {
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  margin-top: 50px;
-}
-
-/* Section Cards */
-.section-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: white;
-  font-size: 1em;
-  box-shadow: 0px 0px 20px rgba(1, 1, 1, 0.8);
-  transition: transform 0.3s, background 0.3s;
-  cursor: pointer;
-  text-align: center;
-  width: calc(50% - 20px); 
-  margin-bottom: 20px;
-  margin: top 20px;
-  margin: left 20px;
-  margin: right 20px;
-  width: 96%; /* Makes exactly two cards per row */
-  max-width: 320px; /* Prevents stretching */
-  min-width: 280px; /* Keeps consistency */
-  box-sizing: border-box;
-}
-
-.container {
-  display: flex;
-  row-gap: 40px;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  max-width: 700px;
-}
-
-
-.section-card img {
-  width: 100%;
-  border-radius: 15px;
-  box-shadow: 0px 0px 10px white;
-}
-
-/* Hover Effect */
-.section-card:hover {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* cards for each field */
-#species, #species_type, #Origin_Status, #status, #family, #numbers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:center;
-  margin-top: 20px;
-  gap: 20px;
-}
-
 
 .search-container {
-  position:relative;
-  width: 700px;
+  display: flex;
+  margin-bottom: 15px;
 }
 
 .search-input {
-  width: 80%;
-  padding: 10px 40px 10px 15px;
-  border: 2px solid #ccc;
-  border-radius: 25px;
-  outline: none;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--table-border);
+  border-radius: 4px 0 0 4px;
   font-size: 16px;
-  transition: 0.3s;
 }
 
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
 
-  /* Add some padding inside the card container */
-  .container {
-    padding: 20px 60px;
-    text-align: center;
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+select {
+  padding: 10px;
+  border: 1px solid var(--table-border);
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 5px;
+  width: 100%;
+  max-width: 300px;
+  cursor: pointer;
+  background-color: white;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  display: block;
+}
+
+th {
+  background-color: var(--table-header-bg);
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+}
+
+td {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--table-border);
+  vertical-align: middle;
+}
+
+tr:nth-child(even) {
+  background-color: var(--table-even-row);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--table-odd-row);
+}
+
+tr:hover {
+  background-color: rgba(139, 195, 74, 0.2);
+}
+
+/* Image styling */
+img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  table {
+      font-size: 14px;
   }
   
-  /* Add rounded corners to the top left and the top right corner of the image */
+  th, td {
+      padding: 8px 10px;
+  }
+  
   img {
-    border-radius: 5px 5px 0 0;
+      max-width: 100px;
   }
+}
 
-  label {
-    border-radius: 10px;
-    font-family: Verdana, sans-serif;
-    font-size: 1em;
+/* Make tables horizontally scrollable on small screens */
+@media (max-width: 1200px) {
+  table {
+      min-width: 1000px;
   }
+}
 
-  a {
-    background-color: rgb(189, 192, 191);
-    padding: 5px;
-    border-radius: 40px;
-    font-family: 'Verdana', serif;
-    font-size: 1.5em;
-  }
+/* Styling for the smaller reference tables */
+table:nth-of-type(n+2) {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* Field selector styling */
+.field-selector {
+  margin-top: 15px;
+}
