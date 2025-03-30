@@ -7,32 +7,51 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <title>Species</title>
     <script>
-        function filterSpecies() {
+        function checkSearchQuery() {
             const params = new URLSearchParams(window.location.search);
             const query = params.get("name");
-    
-            if (query) {
-                let found = false;
-                const rows = document.querySelectorAll("tr.species-row");
-    
+
+            if (!query) {
+                // Redirect to home if no search query is present
+                window.location.href = "http://127.0.0.1:5000/";
+                return;
+            }
+            
+            filterSpecies(query);
+        }
+
+        function filterSpecies(query) {
+            let found = false;
+            const rows = document.querySelectorAll("tr.species-row");
+            const noResultsMessage = document.getElementById("no-results");
+            
+            noResultsMessage.style.display = "none"; // Reset visibility
+            
+            if (query.toLowerCase() === "species") {
+                // Show all species if 'species' is searched
                 rows.forEach(row => {
-                    const speciesName = row.getAttribute("data-name").toLowerCase();
-                    if (speciesName.includes(query.toLowerCase())) {
-                        row.style.display = "";
-                        found = true;
-                    } else {
-                        row.style.display = "none";
-                    }
+                    row.style.display = "";
                 });
-    
-                if (!found) {
-                    document.getElementById("no-results").style.display = "block";
+                return;
+            }
+            
+            rows.forEach(row => {
+                const speciesName = row.getAttribute("data-name").toLowerCase();
+                if (speciesName.includes(query.toLowerCase())) {
+                    row.style.display = "";
+                    found = true;
+                } else {
+                    row.style.display = "none";
                 }
+            });
+            
+            if (!found) {
+                noResultsMessage.style.display = "block";
             }
         }
     </script>
 </head>
-<body onload="filterSpecies()">
+<body onload="checkSearchQuery()">
     <h1>Species Information</h1>
     <a href="/">← Back to Home</a>
 
